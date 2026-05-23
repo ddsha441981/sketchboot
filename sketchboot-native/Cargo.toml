@@ -1,0 +1,16 @@
+[package]
+name = "sketchboot-native"
+version = "0.1.0"
+edition = "2021"
+authors = ["Deendayal Kumawat"]
+repository = "https://github.com/ddsha441981/sketchboot"
+description = "Native Rust bridge for Sketchboot Rate Limiter"
+homepage = "https://github.com/ddsha441981"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Use the official crates.io version
+cl-tds = "0.0.1"
+lz4_flex = "0.11"

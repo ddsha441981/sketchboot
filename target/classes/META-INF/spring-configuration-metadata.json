@@ -1,0 +1,26 @@
+{
+  "groups": [
+    {
+      "name": "management.endpoint.sketches",
+      "type": "io.github.ddsha441981.sketchboot.actuator.SketchEndpoint",
+      "sourceType": "io.github.ddsha441981.sketchboot.actuator.SketchEndpoint"
+    }
+  ],
+  "properties": [
+    {
+      "name": "management.endpoint.sketches.cache.time-to-live",
+      "type": "java.time.Duration",
+      "description": "Maximum time that a response can be cached.",
+      "sourceType": "io.github.ddsha441981.sketchboot.actuator.SketchEndpoint",
+      "defaultValue": "0ms"
+    },
+    {
+      "name": "management.endpoint.sketches.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable the sketches endpoint.",
+      "sourceType": "io.github.ddsha441981.sketchboot.actuator.SketchEndpoint",
+      "defaultValue": true
+    }
+  ],
+  "hints": []
+}
