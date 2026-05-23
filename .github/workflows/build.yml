@@ -19,7 +19,7 @@ jobs:
             lib_name: libsketchboot_native.dylib
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -27,26 +27,27 @@ jobs:
         working-directory: sketchboot-native
         run: cargo build --release
       - name: Upload Native Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: native-libs
+          name: native-libs-${{ matrix.os }}
           path: sketchboot-native/target/release/${{ matrix.lib_name }}
 
   build-java:
     needs: build-rust
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 22
       
       - name: Download Native Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: native-libs
+          pattern: native-libs-*
           path: src/main/resources/native
+          merge-multiple: true
 
       - name: Build Java Spring Boot Starter
         run: mvn -B clean package
