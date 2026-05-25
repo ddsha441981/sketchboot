@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide will walk you through integrating Sketchboot **v1.0.0** into your Spring Boot application.
+This guide will walk you through integrating Sketchboot **v1.0.1** into your Spring Boot application.
 
 ## Prerequisites
 
@@ -17,14 +17,20 @@ Sketchboot is published on Maven Central. Add the following dependency to your `
 <dependency>
     <groupId>io.github.ddsha441981</groupId>
     <artifactId>sketchboot-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
 For Gradle (`build.gradle`):
 ```groovy
-implementation 'io.github.ddsha441981:sketchboot-spring-boot-starter:1.0.0'
+implementation 'io.github.ddsha441981:sketchboot-spring-boot-starter:1.0.1'
 ```
+
+<div style="background-color: #ffe6e6; border-left: 6px solid #ff4d4d; padding: 15px; margin-top: 15px; margin-bottom: 20px; color: #cc0000; border-radius: 4px;">
+    <strong>⚠️ CRITICAL WARNING: Do not use v1.0.0 in Production</strong><br><br>
+    If you are migrating or upgrading, please note that <b>v1.0.0</b> contains a critical performance bug. SpEL expressions (like <code>#userId</code>) were being dynamically parsed on <i>every single HTTP request</i>. Under high traffic, this causes massive CPU spikes and Garbage Collection (GC) overhead, completely destroying the "Zero GC" benefits of the native Rust engine.<br><br>
+    <b>Always use v1.0.1 or higher</b>. In v1.0.1, the SpEL ASTs are safely cached in memory, guaranteeing absolute zero-GC overhead and true lock-free execution.
+</div>
 
 ## 2. Enable Native Access
 
