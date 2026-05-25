@@ -1,7 +1,6 @@
 [book]
 authors = ["ddsha441981"]
 language = "en"
-multilingual = false
 src = "src"
 title = "Sketchboot Documentation"
 
