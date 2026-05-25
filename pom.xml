@@ -6,7 +6,7 @@
 
     <groupId>io.github.ddsha441981</groupId>
     <artifactId>sketchboot-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>Sketchboot</name>
@@ -133,7 +133,7 @@
             <version>3.1.8</version>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- Mega Benchmark Dependencies -->
         <dependency>
             <groupId>com.alibaba.csp</groupId>

@@ -5,6 +5,9 @@
 [![Rust](https://img.shields.io/badge/Rust-Native-orange.svg)](https://www.rust-lang.org/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.ddsha441981/sketchboot-spring-boot-starter)](https://search.maven.org/artifact/io.github.ddsha441981/sketchboot-spring-boot-starter)
+[![Documentation](https://img.shields.io/badge/Docs-mdBook-orange.svg)](https://ddsha441981.github.io/sketchboot/)
+
+**📖 Read the full mdBook Documentation here: [https://ddsha441981.github.io/sketchboot/](https://ddsha441981.github.io/sketchboot/)**
 
 A fixed-memory rate limiting starter for Spring Boot 3.x, backed by a Rust-based Count-Min Sketch.
 
@@ -54,13 +57,13 @@ Add the dependency to your `pom.xml`:
 <dependency>
     <groupId>io.github.ddsha441981</groupId>
     <artifactId>sketchboot-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
 **Important**: You must start the JVM with `--enable-native-access=ALL-UNNAMED` to allow the FFM API to load the native library.
 
-## Usage 
+## Usage
 
 Sketchboot provides 7 annotations to apply rate limits at the controller or method level.
 
