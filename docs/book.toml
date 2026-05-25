@@ -1,0 +1,20 @@
+[book]
+authors = ["ddsha441981"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Sketchboot Documentation"
+
+[rust]
+edition = "2021"
+
+[build]
+build-dir = "book"
+create-missing = false
+
+[output.html]
+theme = "ayu"
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+git-repository-url = "https://github.com/ddsha441981/sketchboot-spring-boot-starter"
+edit-url-template = "https://github.com/ddsha441981/sketchboot-spring-boot-starter/edit/main/docs/{path}"
