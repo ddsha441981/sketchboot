@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * The core AOP Aspect that intercepts all @Sketch* annotations in the Spring Boot application.
  * It manages the lifecycle of the native cl-tds sketches (allocated via Java 22 FFM) and 
  * enforces rate limits using Spring Expression Language (SpEL) to resolve dynamic keys.
- * 
+ *
  * This class ensures that all threshold evaluations are lock-free and highly performant.
  */
 @Aspect
@@ -43,6 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SketchAspect {
 
     private final ConcurrentHashMap<String, ClTdsSketch> sketchPool = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, org.springframework.expression.Expression> expressionCache = new ConcurrentHashMap<>();
     private final ExpressionParser parser = new SpelExpressionParser();
     private final DefaultParameterNameDiscoverer nameDiscoverer = new DefaultParameterNameDiscoverer();
     private final io.micrometer.core.instrument.MeterRegistry meterRegistry;
@@ -98,7 +99,7 @@ public class SketchAspect {
 
         sketch.increment(hashKey);
         int currentCount = sketch.query(hashKey);
-        
+
         // Micrometer Metrics: Record the query
         meterRegistry.counter("cltds.query.count", "sketch", prefix).increment();
 
@@ -106,8 +107,8 @@ public class SketchAspect {
             // Micrometer Metrics: Record the breach
             meterRegistry.counter("cltds.threshold.breach", "sketch", prefix).increment();
             throw new SketchThresholdException(
-                String.format("[%s] Limit exceeded! Key Hash: %d | Current: %d | Max Allowed: %d", 
-                    prefix, hashKey, currentCount, maxLimit)
+                    String.format("[%s] Limit exceeded! Key Hash: %d | Current: %d | Max Allowed: %d",
+                            prefix, hashKey, currentCount, maxLimit)
             );
         }
 
@@ -126,7 +127,7 @@ public class SketchAspect {
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
             // Protect against null args array
             Object[] args = joinPoint.getArgs() != null ? joinPoint.getArgs() : new Object[0];
-            
+
             MethodBasedEvaluationContext context = new MethodBasedEvaluationContext(
                     joinPoint.getTarget(),
                     signature.getMethod(),
@@ -134,12 +135,14 @@ public class SketchAspect {
                     nameDiscoverer
             );
 
-            Object resolvedValue = parser.parseExpression(spelKey).getValue(context);
+            org.springframework.expression.Expression expression = expressionCache.computeIfAbsent(spelKey, parser::parseExpression);
+            Object resolvedValue = expression.getValue(context);
+
             if (resolvedValue == null) {
                 // If the SpEL evaluates to null, don't return 0. Return a unique null-state hash
                 return (long) (joinPoint.getSignature().toShortString() + "_NULL").hashCode();
             }
-            
+
             return (long) resolvedValue.hashCode();
         } catch (Exception e) {
             // Catch SpEL Evaluation Exceptions, Parse Exceptions, or NPEs safely.
